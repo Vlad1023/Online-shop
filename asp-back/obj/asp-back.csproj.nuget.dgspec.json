@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Preparing\\Project\\asp-back\\asp-back.csproj": {}
+    "D:\\Preparing\\Project\\main\\asp-back\\asp-back.csproj": {}
   },
   "projects": {
-    "D:\\Preparing\\Project\\asp-back\\asp-back.csproj": {
+    "D:\\Preparing\\Project\\main\\asp-back\\asp-back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Preparing\\Project\\asp-back\\asp-back.csproj",
+        "projectUniqueName": "D:\\Preparing\\Project\\main\\asp-back\\asp-back.csproj",
         "projectName": "asp-back",
-        "projectPath": "D:\\Preparing\\Project\\asp-back\\asp-back.csproj",
+        "projectPath": "D:\\Preparing\\Project\\main\\asp-back\\asp-back.csproj",
         "packagesPath": "C:\\Users\\volko\\.nuget\\packages\\",
-        "outputPath": "D:\\Preparing\\Project\\asp-back\\obj\\",
+        "outputPath": "D:\\Preparing\\Project\\main\\asp-back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\volko\\AppData\\Roaming\\NuGet\\NuGet.Config",
