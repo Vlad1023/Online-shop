@@ -51,8 +51,9 @@ namespace asp_back.Controllers
             }
         }
         [HttpPost("Register")]
-        public IActionResult Registr(User user)
+        public IActionResult Registr(JsonElement json)
         {
+            var user = new User(json.GetProperty("Login").ToString(), json.GetProperty("Password").ToString());
             int? findUser = users.ifExistsGetId(user);
             if (findUser != null)
             {

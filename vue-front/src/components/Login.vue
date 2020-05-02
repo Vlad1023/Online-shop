@@ -12,7 +12,7 @@
             <label class="form_label">Введите пароль</label>
             <input required v-model="Password" class="form_input" type = "password" placeholder="Password"/>
         </div>
-        <div v-if="ifExist" id = "Error"><p>{{errorMes}}</p></div>
+        <div v-if="errorMes" id = "Error"><p>{{errorMes}}</p></div>
         <button type="submit" class="form_button">Вход</button>
         <button @click="Continue" class="form_button"><h1 id = "h1_cont" class="form_title">Продолжить</h1></button>
 
@@ -23,7 +23,6 @@
 export default {
     data: function () {
     return {
-      ifExist: false,
       errorMes: null,
       Login: null,
       Password: null

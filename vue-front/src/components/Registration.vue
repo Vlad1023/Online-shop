@@ -5,18 +5,28 @@
         <div class="form_group">
             <label class="form_label">Введите логин</label>
              <input required v-model="Login" class="form_input" placeholder="Login" type="text"/>
-             <div v-if="!loginCheck()" id = "Error"><p>Длинна логина должна быть больше 4 и меньше 40</p></div>
+             <div id = "Error">
+             <p v-if="loginCheck" style = "color: green;">Длинна логина должна быть больше 4 и меньше 40</p>
+             <p v-else style = "color: red;">Длинна логина должна быть больше 4 и меньше 40</p>
+             </div>
         </div>
         <div class="form_group">
             <label class="form_label" asp-for="Password">Введите пароль</label>
             <input required v-model="Password" class="form_input" type = "password" placeholder="Password"/>
-            <div v-if="!passwordCheck()" id = "Error"><p>Длинна пароля должна быть больше 6 и меньше 40</p></div>
+            <div id = "Error">
+                <p v-if="passwordCheck" style = "color: green;">Длинна пароля должна быть больше 6 и меньше 40</p>
+                <p v-else style = "color: red;">Длинна пароля должна быть больше 6 и меньше 40</p>
+            </div>
         </div>
         <div class="form_group">
             <label class="form_label">Повторите пароль</label>
            <input required v-model="PasswordConfirm" class="form_input" type = "password" placeholder="Password"/>
-           <div v-if="!passwordEqualsCheck()" id = "Error"><p>Пароли должны совпадать</p></div>
+           <div id = "Error">
+            <p v-if="passwordEqualsCheck" style = "color: green;">Пароли должны совпадать</p>
+             <p v-else style = "color: red;">Пароли должны совпадать</p>
+            </div>
         </div>
+        <div v-if="errorMes" id = "Error"><p>{{errorMes}}</p></div>
         <button  type="submit" class="form_button">Регистрация</button>
 </form>    
 </template>
@@ -25,33 +35,33 @@ import api from '@/API/api.js';
 export default {
     data: function () {
     return {
-      ifExist: false,
       Login: null,
       Password: null,
       PasswordConfirm: null,
-      message: null
+      errorMes: null,
     }
     },
     methods: {
     checkForm: function (e) { 
-    if(this.loginCheck() && this.passwordCheck() && this.passwordEqualsCheck()){
-        api.register({Login: this.Login, Password: this.Password},() => this.$router.push({name : 'main'}), (mes) => this.message = mes )
+    if(this.loginCheck && this.passwordCheck && this.passwordEqualsCheck){
+        api.register({Login: this.Login, Password: this.Password},() => this.$router.push({name : 'main'}), (mes) => this.errorMes = mes )
     }
     e.preventDefault(); 
+    }
     }, 
+    computed : {
     loginCheck(){
-    if(this.Login.length > 4 && this.Login.length < 40) return true;
+    if(this.Login && this.Login.length > 4 && this.Login.length < 40) return true;
     else return false;
 },
     passwordCheck(){
-    if(this.Password.length > 6 && this.Password.length < 40) return true;
+    if(this.Password && this.Password.length > 6 && this.Password.length < 40) return true;
     else return false;
 },
     passwordEqualsCheck(){
-    if(this.Password === this.PasswordConfirm) return true;
+    if(this.Password && this.PasswordConfirm && this.Password === this.PasswordConfirm) return true;
     else return false;
 }
-
 }
 }
 </script>
@@ -60,13 +70,15 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+}
+#Error p {
+    font-size: 0.8rem;
 }
 #Error{
     text-align: left;
     margin-top: 50px;
 }
-#Error p{
+#Error:last-of-type p {
     font-size: 2rem;
     color: red;
 }
