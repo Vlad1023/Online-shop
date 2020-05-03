@@ -11,7 +11,7 @@
                     <div class="Personal">
                         <i class="fa fa-male" style="display: inline-block; margin-right: 30px; font-size: xx-large;"></i>
                         <h3 style="display: inline-block; margin-right: 30px;" class="InfoName">{{name}}</h3>
-                        <button><h3 class="InfoTxt" style="display: inline-block;">Личный кабинет</h3></button>
+                         <router-link to="/personal"><button><h3 class="InfoTxt" style="display: inline-block;">Личный кабинет</h3></button></router-link>
                     </div>
                 </div>
             </div>
@@ -82,8 +82,8 @@ import api from '@/API/api.js'
 import Vue from 'vue'
 import marketComp from '@/components/marketComp.vue'
 export default {
-created(){
- api.isLogged((name) => {this.name = name;if(!name) Vue.prototype.$isLogged = false; });
+ created(){
+api.isLogged((name) => this.name = name);
 },
 data() {
         return {

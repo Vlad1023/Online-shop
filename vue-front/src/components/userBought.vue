@@ -1,39 +1,39 @@
 <template>
-    <section id="root">
-        <ul v-for="item in goodsArr" :key="item.Id" id="market1">
-            <li class="Name">{{ item.Name }}</li>
-            <li class="Img"><div class= "Discount"><span>-{{item.Discount}}%</span></div><img v-bind:src="getImg(item.ImgData)"></li>
-            <li><div @click="Purchase(item)" class="btn"><span>Добавить в корзину</span></div></li>
-            <li class="Description">{{ item.Description }}</li>
-        </ul>
-    </section>
+<div id = "Wrap2">
+    <ul v-for="item in items" :key="item.Id" id="market1">
+        <li class="Name">{{ item.Name }}</li>
+        <li class="Img">
+        <div class= "Discount">
+            <span v-if="item.Discount">-{{item.Discount}}%</span>
+        </div><img v-bind:src="getImg(item.ImgData)"></li>
+        <li class="Description">{{ item.Description }}</li>
+    </ul>
+</div>
 </template>
 <script>
- import api from '@/API/api.js';
-    export default {
-        data: function () {
-            return {
-                goodsArr: Array,
-            };
-        },
-         mounted() {
-            api.market((info) => {this.goodsArr = info},'market2'); 
-        },
-        methods: {
-            getImg(toConvert) {
-                return "data:image/jpg;base64," + toConvert;
-            },
-            Purchase(item){
-                api.isLoggedForce( () => this.addItem(item));
-            },
-            addItem(item){
-                api.addItemToCart(item);
-            }
+export default {
+    props: {
+        items: Array
+    },
+     methods: {
+        getImg(toConvert) {
+            return "data:image/jpg;base64," + toConvert;
         }
-    };
+    },
+    created(){
+        this.$eventBus.$on('send-data', (item) => {
+        this.items.push(item);
+    });
+    }      
+}
 </script>
 <style scoped>
-    html, body {
+#Wrap2{
+width: 100%;
+height: 100%;
+background-color: #001f3f;
+}
+html, body {
         box-sizing: border-box;
     }
 
@@ -48,25 +48,25 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        width: 20%;
-        padding: 10px;
-        height: 90%;
+        width: 40%;
+        padding: 2px;
     }
 
-    #root {
+    #Wrap2 {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
-        padding: 2%;
-        background-color: #3456A6;
-        overflow-x: scroll;
+        flex-wrap: wrap;
+        padding: 1%;
+        align-content: flex-start;
+        overflow-y:scroll;
     }
     .Name {
         font-size: 1.5rem;
     }
     .Description {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     .Name, .Description {
         color: #41D272;
@@ -91,7 +91,7 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        max-height: 200px;
+        max-height: 150px;
         width: auto;
         height: auto;
     }
@@ -100,7 +100,7 @@
         line-height: 50px;
         height: 50px;
         text-align: center;
-        width: 250px;
+        width: 100px;
         cursor: pointer;
     }
 

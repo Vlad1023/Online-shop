@@ -29,6 +29,17 @@ namespace asp_back.Controllers
             }
             return BadRequest("Войдите или зарегестрируйтесь");
         }
+        [HttpGet("isLoggedForce")]
+        public IActionResult IsLoggedForce()
+        {
+            var user = HttpContext.Session.GetString("user");
+            if (user != null)
+            {
+                var userJson = JObject.Parse(user);
+                return Ok(userJson.GetValue("Login").ToString());
+            }
+            return Unauthorized();
+        }
         [HttpGet("logOut")]
         public IActionResult logOut()
         {

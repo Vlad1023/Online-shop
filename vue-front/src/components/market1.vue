@@ -3,7 +3,7 @@
         <ul v-for="item in goodsArr" :key="item.Id" id="market1">
             <li class="Name">{{ item.Name }}</li>
             <li class="Img"><img v-bind:src="getImg(item.ImgData)"></li>
-            <li @click="Puchase(item)"><div class="btn"><span>Purchase</span></div></li>
+            <li @click="Purchase(item)"><div class="btn"><span>Добавить в корзину</span></div></li>
             <li class="Description">{{ item.Description }}</li>
         </ul>
     </section>
@@ -23,8 +23,12 @@
             getImg(toConvert) {
                 return "data:image/jpg;base64," + toConvert;
             },
-            Purchase(){
-               
+            Purchase(item){
+                api.isLoggedForce( () => this.addItem(item));
+            },
+            addItem(item){
+                item["Discount"] = 0;
+                api.addItemToCart(item);
             }
         }
     };

@@ -45,9 +45,6 @@ namespace asp_back.Models
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                var sqlQuery1 = "INSERT INTO UserTB (Login,Password) VALUES(@Login,@Password)";
-                var result = db.Execute(sqlQuery1, user);
-
                 var sqlQuery = "INSERT INTO UserTB (Login,Password) VALUES(@Login,@Password); SELECT CAST(SCOPE_IDENTITY() as int)";
                 int? userId = db.Query<int>(sqlQuery, user).FirstOrDefault();
                 return userId.Value;
@@ -61,7 +58,7 @@ namespace asp_back.Models
                 var Password = user.Password;
                 return db.Query<int?>(@"SELECT Id
                 FROM UserTB
-                WHERE Login = @Login and Password = @Password", new { Login, Password }).FirstOrDefault();
+                WHERE Login = @Login or Password = @Password", new { Login, Password }).FirstOrDefault();
             }
         }
     }

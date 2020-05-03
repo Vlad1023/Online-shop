@@ -4,7 +4,6 @@ import router from '@/router/index.js';
 const baseURl = "http://localhost:57236";
 const apiClient = axios.create({
     baseURL: baseURl,
-    // baseURL: "",
     withCredentials: true,
     headers:{
         Accept: "application/json",
@@ -17,14 +16,18 @@ function onError(err){
         router.push('login');
         return;
     }
-    
-    console.log('API ERROR: ' + err.message);
+    alert('API ERROR: ' + err.message);
 }
 
 export default {
     isLogged(onLoad){
         apiClient.get('User/isLogged')
             .then(resp => onLoad(resp.data))
+            .catch(err => onError(err));
+    },
+    isLoggedForce(onLoad){
+        apiClient.get('User/isLoggedForce')
+            .then(() => {if(typeof onLoad !== "undefined")onLoad()})
             .catch(err => onError(err));
     },
     login(user,onLoad,onErr){
@@ -47,5 +50,19 @@ export default {
                 onLoad(parsedJson);
             })
         });
+    },
+    addItemToCart(item){
+        apiClient.post('UserCart/Create',item)
+        .then(resp => {resp})
+        .catch(err => onError(err));
+    },
+    MoveToPurchase(Id){
+        apiClient.put('UserCart/Purchase',Id)
+        .catch(err => onError(err));
+    },
+    getCurrentUserItems(onLoad){
+        apiClient.get('UserCart/GetUserItems')
+            .then((resp) => onLoad(resp))
+            .catch(err => onError(err));
     }
 }

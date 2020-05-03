@@ -5,7 +5,7 @@ import market2 from '@/components/market2.vue'
 import main from '@/components/MainPage.vue'
 import login from '@/components/Login.vue'
 import registr from '@/components/Registration.vue'
-
+import personal from '@/components/Personal.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -32,6 +32,9 @@ routes: [
     },
     { 
       path: '/registration', component: registr,
+    },
+    { 
+      path: '/personal', component: personal,
     }
 ]
 })

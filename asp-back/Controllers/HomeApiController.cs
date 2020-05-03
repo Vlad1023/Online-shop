@@ -25,7 +25,6 @@ namespace asp_back.Controllers
         [HttpGet("market1")]
         public string Get1(int id)
         {
-            
             var referList = repo1.GetItems();
             var resultList = new List<Object>();
             referList.ForEach(el => {
