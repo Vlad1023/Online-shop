@@ -16,8 +16,14 @@
                 goodsArr: Array,
             };
         },
-         mounted() {
-            api.market((info) => {this.goodsArr = info},'market1');
+        props: {
+            itemArId: Number
+        },
+         created() {
+            api.market((info) => {this.goodsArr = info;this.Swap(this.itemArId)},'market1');
+              this.$eventBus.$on('market1Find', (Id) => {
+            this.Swap(Id);
+        });
          },
         methods: {
             getImg(toConvert) {
@@ -29,6 +35,13 @@
             addItem(item){
                 item["Discount"] = 0;
                 api.addItemToCart(item);
+            },
+            Swap(Id){
+                if(Id){
+                let temp = this.goodsArr[0];
+                this.goodsArr[0] = this.goodsArr[Id];
+                this.goodsArr[Id] = temp;
+                }
             }
         }
     };

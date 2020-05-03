@@ -22,8 +22,8 @@
                     <div class="Top">
                         <img :src="images.logo" width="70px" height="90px">
                         <div class="InputField" style="width: 20%; display: flex; justify-content: space-between;">
-                            <input type="text" rows="1" placeholder="Например: гипсокартон стеневой">
-                            <i class="fas fa-cloud" style=" padding-top: 5%; font-size: 100%;"></i>
+                            <input v-model="toSearch" type="text" rows="1" placeholder="Например: гипсокартон стеневой">
+                            <i @click="findItem()" class="fas fa-cloud" style=" padding-top: 5%; font-size: 100%;"></i>
                         </div>
                         <div class="Phone">
                             <div><p>(099)-000-777-1</p></div>
@@ -93,7 +93,9 @@ data() {
                 logo: require('@/assets/img/logo.jpg'),
                 shock: require('@/assets/img/Shock.jpg'),
             },
-            name : null
+            name : null,
+            toSearch: null,
+            itemArID: 0
         }
     },
   components:{
@@ -107,6 +109,30 @@ data() {
       },
       logIn(){
           this.$router.push('/login');
+      },
+      findItem(){
+          if(this.toSearch){
+            let ifFound = api.market( (info) => this.checkIfContains(info,'market1'),'market1');
+            if(!ifFound) ifFound = api.market( (info) => this.checkIfContains(info,'market2'),'market2');
+            if(!ifFound) ifFound = api.market( (info) => this.checkIfContains(info,'market3'),'market3');
+          }
+      },
+      checkIfContains(info,toPush){
+         let ObjArray = info;
+         this.itemArID = 0;
+         for (const item of ObjArray) {
+            if(item['Name'].includes(this.toSearch)){
+                if(!this.$route.path.includes(toPush)){
+                    this.$router.push({ name : toPush, params: { itemArId :  this.itemArID  }});
+                }
+                else{
+                    this.$eventBus.$emit(`${toPush} + 'Find'`, this.itemArID);
+                }
+                return true;
+            }
+            this.itemArID++;
+        }
+        return false;
       }
   }
 }

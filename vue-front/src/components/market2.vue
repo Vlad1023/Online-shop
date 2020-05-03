@@ -16,8 +16,14 @@
                 goodsArr: Array,
             };
         },
-         mounted() {
-            api.market((info) => {this.goodsArr = info},'market2'); 
+        props: {
+            itemArId: Number
+        },
+         created() {
+            api.market((info) => {this.goodsArr = info;this.Swap(this.itemArId)},'market2'); 
+             this.$eventBus.$on('market2Find', (Id) => {
+            this.Swap(Id);
+        });
         },
         methods: {
             getImg(toConvert) {
@@ -28,6 +34,13 @@
             },
             addItem(item){
                 api.addItemToCart(item);
+            },
+             Swap(Id){
+                if(Id){
+                let temp = this.goodsArr[0];
+                this.goodsArr[0] = this.goodsArr[Id];
+                this.goodsArr[Id] = temp;
+                }
             }
         }
     };

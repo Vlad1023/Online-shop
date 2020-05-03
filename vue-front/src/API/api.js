@@ -64,5 +64,9 @@ export default {
         apiClient.get('UserCart/GetUserItems')
             .then((resp) => onLoad(resp))
             .catch(err => onError(err));
+    },
+    deleteItem(itemId){
+        apiClient.put('UserCart/DeleteItem',itemId)
+            .catch(err => onError(err));
     }
 }

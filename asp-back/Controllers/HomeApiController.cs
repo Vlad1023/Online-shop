@@ -16,10 +16,12 @@ namespace asp_back.Controllers
     {
         IMarket1Repository repo1;
         IMarket2Repository repo2;
-        public HomeApiController(IMarket1Repository market1TB, IMarket2Repository market2TB)
+        ICartItemRepo repo3;
+        public HomeApiController(IMarket1Repository market1TB, IMarket2Repository market2TB, ICartItemRepo market3TB)
         {
             repo1 = market1TB;
             repo2 = market2TB;
+            repo3 = market3TB;
         }
         // GET: HomeApi/market1
         [HttpGet("market1")]
@@ -43,6 +45,19 @@ namespace asp_back.Controllers
             referList.ForEach(el => {
                 resultList.Add
                     (new { Id = el.Id, Name = el.Name, Description = el.Description, Discount = el.Discount, ImgData = Convert.ToBase64String(el.ImgData) });
+            });
+            var json = System.Text.Json.JsonSerializer.Serialize(resultList);
+            return json;
+        }
+        // GET: HomeApi/market3
+        [HttpGet("market3")]
+        public string Get3(int id)
+        {
+            var referList = repo3.GetTop5Frequent();
+            var resultList = new List<Object>();
+            referList.ForEach(el => {
+                resultList.Add
+                    (new { Name = el.Name, Description = el.Description, Discount = el.Discount, ImgData = Convert.ToBase64String(el.ImgData) });
             });
             var json = System.Text.Json.JsonSerializer.Serialize(resultList);
             return json;

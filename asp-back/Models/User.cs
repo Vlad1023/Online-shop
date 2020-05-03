@@ -58,7 +58,7 @@ namespace asp_back.Models
                 var Password = user.Password;
                 return db.Query<int?>(@"SELECT Id
                 FROM UserTB
-                WHERE Login = @Login or Password = @Password", new { Login, Password }).FirstOrDefault();
+                WHERE Login = @Login and Password = @Password", new { Login, Password }).FirstOrDefault();
             }
         }
     }

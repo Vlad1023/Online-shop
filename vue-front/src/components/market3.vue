@@ -1,48 +1,56 @@
 <template>
-<div id = "Wrap2">
-    <ul v-for="item in items" :key="item.Id" id="market1">
-        <li class="Name">{{ item.Name }}</li>
-        <li class="Img">
-        <div class= "Discount">
-            <span v-if="item.Discount">-{{item.Discount}}%</span>
-        </div><img v-bind:src="getImg(item.ImgData)"></li>
-        <li class="Description">{{ item.Description }}</li>
-        <li @click="Purchase(item)"><div class="btn"><span>Убрать из истории</span></div></li>
-    </ul>
-</div>
+    <section id="root">
+        <ul v-for="item in goodsArr" :key="item.Name" id="market1">
+            <li class="Name">{{ item.Name }}</li>
+            <li class="Img">
+            <div class= "Discount">
+                <span v-if="item.Discount">-{{item.Discount}}%</span>
+            </div><img v-bind:src="getImg(item.ImgData)"></li>
+            <li><div @click="Purchase(item)" class="btn"><span>Добавить в корзину</span></div></li>
+            <li class="Description">{{ item.Description }}</li>
+        </ul>
+    </section>
 </template>
 <script>
-import api from '@/API/api.js';
-export default {
-    props: {
-        items: Array
-    },
-     methods: {
-        getImg(toConvert) {
-            return "data:image/jpg;base64," + toConvert;
+ import api from '@/API/api.js';
+    export default {
+        data: function () {
+            return {
+                goodsArr: Array,
+            };
         },
-        Purchase(item){
-            api.isLoggedForce(() => { this.Proceed(item)})
+        props: {
+            itemArId: Number
         },
-        Proceed(item){
-            this.items.splice( this.items.indexOf(item), 1 );
-            api.deleteItem(item.Id);
+         created() {
+            api.market((info) => {this.goodsArr = info;this.Swap(this.itemArId)},'market3');
+             this.$eventBus.$on('market3Find', (Id) => {
+            this.Swap(Id);
+        });
+         },
+        methods: {
+            getImg(toConvert) {
+                return "data:image/jpg;base64," + toConvert;
+            },
+            Purchase(item){
+                api.isLoggedForce( () => this.addItem(item));
+            },
+            addItem(item){
+                if(!item["Discount"]) item["Discount"] = 0;
+                api.addItemToCart(item);
+            },
+             Swap(Id){
+                if(Id){
+                let temp = this.goodsArr[0];
+                this.goodsArr[0] = this.goodsArr[Id];
+                this.goodsArr[Id] = temp;
+                }
+            }
         }
-    },
-    created(){
-        this.$eventBus.$on('send-data', (item) => {
-        this.items.push(item);
-    });
-    }      
-}
+    };
 </script>
 <style scoped>
-#Wrap2{
-width: 100%;
-height: 100%;
-background-color: #001f3f;
-}
-html, body {
+    html, body {
         box-sizing: border-box;
     }
 
@@ -57,25 +65,25 @@ html, body {
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        width: 40%;
-        padding: 2px;
+        width: 20%;
+        padding: 10px;
+        height: 90%;
     }
 
-    #Wrap2 {
+    #root {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
-        flex-wrap: wrap;
-        padding: 1%;
-        align-content: flex-start;
-        overflow-y:scroll;
+        padding: 2%;
+        background-color: #3456A6;
+        overflow-x: scroll;
     }
     .Name {
         font-size: 1.5rem;
     }
     .Description {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
     .Name, .Description {
         color: #41D272;
@@ -100,7 +108,7 @@ html, body {
         display: block;
         margin-left: auto;
         margin-right: auto;
-        max-height: 150px;
+        max-height: 200px;
         width: auto;
         height: auto;
     }
@@ -109,7 +117,7 @@ html, body {
         line-height: 50px;
         height: 50px;
         text-align: center;
-        width: 100px;
+        width: 250px;
         cursor: pointer;
     }
 
@@ -121,7 +129,6 @@ html, body {
 
     .btn span {
         transition: all 0.3s;
-        font-size: 0.7rem;
     }
 
         .btn::before {
@@ -143,6 +150,9 @@ html, body {
             transform: scale(0.1, 1);
         }
 
+    .btn:hover span {
+        letter-spacing: 2px;
+    }
 
         .btn:hover::before {
             opacity: 1;

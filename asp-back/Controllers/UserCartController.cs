@@ -52,10 +52,16 @@ namespace asp_back.Controllers
             return json;
         }
         [HttpPut("Purchase")]
-        public void Delete(JsonElement Id)
+        public void Purchase(JsonElement Id)
         {
             var ItemId = Convert.ToInt32(Id.ToString());
             carts.Purchase(ItemId);
+        }
+        [HttpPut("DeleteItem")]
+        public void Delete(JsonElement Id)
+        {
+            var ItemId = Convert.ToInt32(Id.ToString());
+            carts.Delete(ItemId);
         }
     }
 }

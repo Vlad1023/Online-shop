@@ -3,7 +3,7 @@
 <div class="menu">
     <router-link class = "vue-nav" to="/market1">Каталог товаров</router-link>
     <router-link class = "vue-nav" to="/market2">Акции</router-link>
-    <router-link class = "vue-nav" to="/market1">Популярное</router-link>
+    <router-link class = "vue-nav" to="/market3">Популярное</router-link>
 </div>
 <div id= "menuContent"><router-view></router-view></div>
 </div>

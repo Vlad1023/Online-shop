@@ -1,7 +1,14 @@
 <template>
 <div id = "Wrap">
+    <div class = "elWrap">
+    <div class = "elName"><p>Купленные товары</p></div>
     <div class = "elem"><userBought v-bind:items="userBought" /></div>
+    </div>
+    <router-link class = "vue-nav" to="/"><div class = "elName"><p>Вернуться на главную</p></div></router-link>
+    <div class = "elWrap">
+    <div class = "elName"><p>Корзина товаров</p></div>
     <div class = "elem"><userCart v-bind:items="userCart" /></div>
+    </div>
 </div>
 </template>
 <script>
@@ -53,7 +60,32 @@ justify-content: space-between;
 }
 .elem{
     height: 100%;
+    width: 100%;
+}
+.elName p{
+    font-size: 2rem;
+}
+.elWrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90%;
     width: 30%;
     min-width: 100px;
+}
+.vue-nav  {
+box-sizing: border-box;
+font-size: 1.5rem;
+color:white;
+font-weight: 100;
+letter-spacing: 2px;
+text-decoration: none;
+background:rgba(0,0,0,0.2);
+display: inline-block;
+width: 30%;
+height: 100px;
+text-align: center;
+transition:all 0.5s;
+color: green;
 }
 </style>

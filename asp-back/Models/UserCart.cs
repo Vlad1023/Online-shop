@@ -35,6 +35,7 @@ namespace asp_back.Models
         void Delete(int Id);
         List<dynamic> GetItems(int UserId);
         public void Purchase(int Id);
+        public List<dynamic> GetTop5Frequent();
     }
     public class CartItemRepo : ICartItemRepo
     {
@@ -73,6 +74,14 @@ namespace asp_back.Models
             {
                 var sqlQuery = "UPDATE UsersItemsTB Set IsBought = 1 WHERE Id = @Id";
                 db.Execute(sqlQuery, new { Id });
+            }
+        }
+        public List<dynamic> GetTop5Frequent()
+        {
+            using (IDbConnection db = new SqlConnection(connectionString))
+            {
+                var info = db.Query<dynamic>("SELECT TOP(5) Name,Description,ImgData,Discount, Count(*) FROM UsersItemsTB where IsBought = 1 GROUP BY Name, Description, ImgData, Discount ORDER BY Count(*) DESC").ToList();
+                return info;
             }
         }
 
